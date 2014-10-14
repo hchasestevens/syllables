@@ -15,6 +15,17 @@ numSyllables :: String -> Int
 numSyllables str = length $ filter isDigit $ phonemes str
 
 
+comparePattern :: String -> String -> Bool
+comparePattern [] (x:xs) = False
+comparePattern (x:xs) [] = False
+comparePattern [] [] = True
+comparePattern (x:xs) (y:ys)
+	| x == '*' = comparePattern xs ys
+	| y == '*' = comparePattern xs ys
+	| x == y = comparePattern xs ys
+	| otherwise = False
+
+
 filterOnNumSyllables pronunciations = do
 	putStrLn "Enter number of syllables:"
 	syllables <- getLine
@@ -23,11 +34,11 @@ filterOnNumSyllables pronunciations = do
 
 
 filterOnStressSyllables pronunciations = do
-	putStrLn "Enter syllable stresses (0 - no stress; 1 - primary stress; 2 - secondary stress):"
+	putStrLn "Enter syllable stresses (0 - none; 1 - primary; 2 - secondary; * - any):"
 	pattern <- getLine
 	--let regex = mkRegex $ "^[^\\d]+" ++ (intercalate "[^\\d]+" $ map return pattern) ++ "[^\\d]*$"
 	--mapM_ putStrLn $ [word | word <- pronunciations, (isJust . matchRegex regex . phonemes) word]
-	mapM_ putStrLn $ [word | word <- pronunciations, pattern == filter isDigit (phonemes word)]
+	mapM_ putStrLn $ [word | word <- pronunciations, pattern `comparePattern` filter isDigit (phonemes word)]
 
 
 main = do
