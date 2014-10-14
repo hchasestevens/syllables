@@ -44,9 +44,13 @@ filterOnStressSyllables pronunciations = do
 
 
 main = do
+	putStrLn "Source available at https://github.com/hchasestevens/syllables."
+	putStrLn "Uses the CMU Pronouncing Dictionary (http://www.speech.cs.cmu.edu/cgi-bin/cmudict)."
+	putStrLn ""
 	file <- readFile "cmudict.0.7a.txt"
 	let pronunciations = filter (not . (==) ';' . head) $ lines file
 	putStrLn "Search by number of syllables (1) or syllable pattern (2)?"
 	choice <- getLine
+	putStrLn ""
 	let fn = if (choice == "1") then filterOnNumSyllables else filterOnStressSyllables
 	forever $ fn pronunciations
