@@ -16,12 +16,14 @@ numSyllables str = length $ filter isDigit $ phonemes str
 
 
 filterOnNumSyllables pronunciations = do
+	putStrLn "Enter number of syllables:"
 	syllables <- getLine
 	let syllables' = read syllables :: Int
 	mapM_ putStrLn $ [word | word <- pronunciations, numSyllables word == syllables'] 
 
 
 filterOnStressSyllables pronunciations = do
+	putStrLn "Enter syllable stresses (0 - no stress; 1 - primary stress; 2 - secondary stress):"
 	pattern <- getLine
 	--let regex = mkRegex $ "^[^\\d]+" ++ (intercalate "[^\\d]+" $ map return pattern) ++ "[^\\d]*$"
 	--mapM_ putStrLn $ [word | word <- pronunciations, (isJust . matchRegex regex . phonemes) word]
