@@ -31,6 +31,7 @@ filterOnNumSyllables pronunciations = do
 	syllables <- getLine
 	let syllables' = read syllables :: Int
 	mapM_ putStrLn $ [word | word <- pronunciations, numSyllables word == syllables'] 
+	putStrLn ""
 
 
 filterOnStressSyllables pronunciations = do
@@ -39,6 +40,7 @@ filterOnStressSyllables pronunciations = do
 	--let regex = mkRegex $ "^[^\\d]+" ++ (intercalate "[^\\d]+" $ map return pattern) ++ "[^\\d]*$"
 	--mapM_ putStrLn $ [word | word <- pronunciations, (isJust . matchRegex regex . phonemes) word]
 	mapM_ putStrLn $ [word | word <- pronunciations, pattern `comparePattern` filter isDigit (phonemes word)]
+	putStrLn ""
 
 
 main = do
