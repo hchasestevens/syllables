@@ -1,9 +1,7 @@
 import Data.Char (isDigit)
-import Data.List (intercalate)
 import Data.List.Split (splitOn)
-import Data.Maybe (isJust)
-import Text.Regex (mkRegex, matchRegex)
 import Control.Monad (forever)
+
 
 phonemes :: String -> String
 phonemes str = cs
@@ -26,6 +24,7 @@ comparePattern (x:xs) (y:ys)
 	| otherwise = False
 
 
+filterOnNumSyllables :: [String] -> IO ()
 filterOnNumSyllables pronunciations = do
 	putStrLn "Enter number of syllables:"
 	syllables <- getLine
@@ -34,15 +33,15 @@ filterOnNumSyllables pronunciations = do
 	putStrLn ""
 
 
+filterOnStressSyllables :: [String] -> IO ()
 filterOnStressSyllables pronunciations = do
 	putStrLn "Enter syllable stresses (0 - none; 1 - primary; 2 - secondary; * - any):"
 	pattern <- getLine
-	--let regex = mkRegex $ "^[^\\d]+" ++ (intercalate "[^\\d]+" $ map return pattern) ++ "[^\\d]*$"
-	--mapM_ putStrLn $ [word | word <- pronunciations, (isJust . matchRegex regex . phonemes) word]
 	mapM_ putStrLn $ [word | word <- pronunciations, pattern `comparePattern` filter isDigit (phonemes word)]
 	putStrLn ""
 
 
+main :: IO ()
 main = do
 	putStrLn "Source available at https://github.com/hchasestevens/syllables."
 	putStrLn "Uses the CMU Pronouncing Dictionary (http://www.speech.cs.cmu.edu/cgi-bin/cmudict)."
